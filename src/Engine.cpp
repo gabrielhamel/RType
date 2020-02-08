@@ -35,6 +35,51 @@ Engine::~Engine()
 void Engine::eventManager(const sf::Event &event)
 {
     switch (event.type) {
+        case sf::Event::KeyPressed:
+            switch (event.key.code) {
+                case sf::Keyboard::Space:
+                    this->m_player.setOnShot(true);
+                break;
+                case sf::Keyboard::Escape:
+                    this->close();
+                break;
+                case sf::Keyboard::Z:
+                    this->m_player.setSpeedY(-1);
+                break;
+                case sf::Keyboard::S:
+                    this->m_player.setSpeedY(1);
+                break;
+                case sf::Keyboard::Q:
+                    this->m_player.setSpeedX(-1);
+                break;
+                case sf::Keyboard::D:
+                    this->m_player.setSpeedX(1);
+                break;
+            }
+        break;
+        case sf::Event::KeyReleased:
+            switch (event.key.code) {
+                case sf::Keyboard::Space:
+                    this->m_player.setOnShot(false);
+                break;
+                case sf::Keyboard::Z:
+                    if (this->m_player.getSpeedY() < 0)
+                        this->m_player.setSpeedY(0);
+                break;
+                case sf::Keyboard::S:
+                    if (this->m_player.getSpeedY() > 0)
+                        this->m_player.setSpeedY(0);
+                break;
+                case sf::Keyboard::Q:
+                    if (this->m_player.getSpeedX() < 0)
+                        this->m_player.setSpeedX(0);
+                break;
+                case sf::Keyboard::D:
+                    if (this->m_player.getSpeedX() > 0)
+                        this->m_player.setSpeedX(0);
+                break;
+            }
+        break;
         case sf::Event::JoystickButtonPressed:
             if (event.joystickButton.button == 0)
                 this->m_player.setOnShot(true);

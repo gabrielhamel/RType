@@ -67,3 +67,13 @@ void Player::setOnShot(bool enable)
     this->m_shot = enable;
     this->m_bulletTime = 0.2f;
 }
+
+float Player::getSpeedX() const
+{
+    return this->m_speedX;
+}
+
+float Player::getSpeedY() const
+{
+    return this->m_speedY;
+}

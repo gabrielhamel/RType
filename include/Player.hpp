@@ -46,4 +46,8 @@ public:
 
     void setOnShot(bool enable);
 
+    float getSpeedX() const;
+
+    float getSpeedY() const;
+
 };
