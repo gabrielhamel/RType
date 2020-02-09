@@ -43,7 +43,14 @@ void Player::setTextureNo(unsigned int nb)
 
 void Player::update(float ellaspedTime)
 {
-    this->move(this->m_speedX * ellaspedTime, this->m_speedY * ellaspedTime);
+    auto inc = sf::Vector2f(this->m_speedX * ellaspedTime, this->m_speedY * ellaspedTime);
+    auto pos = this->getPosition();
+    auto size = sf::Vector2f(33 * 3, 17 * 3);
+    if (pos.x + size.x + inc.x >= 1600 || pos.x + inc.x < 0)
+        inc.x = 0;
+    if (pos.y + size.y + inc.y >= 900 || pos.y + inc.y < 0)
+        inc.y = 0;
+    this->move(inc);
     m_bulletTime += ellaspedTime;
     if (this->m_shot && this->m_bulletTime >= 0.2f) {
         this->m_bulletTime = 0.f;

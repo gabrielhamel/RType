@@ -30,8 +30,7 @@ m_engine(engine), m_type(entity), m_current(0), m_clock(0), speedX(0), speedY(0)
 
 AnimatedSprite::~AnimatedSprite()
 {
-	if (this->m_type != PlayerBullet)
-		this->m_engine.explode();
+
 }
 
 void AnimatedSprite::update(float ellapsedTime)
@@ -71,8 +70,10 @@ void AnimatedSprite::takeDamage(float amount)
 	size.height *= 3;
 	this->m_lifeBar.setFillColor(sf::Color::Red);
 	this->m_lifeBar.setSize(sf::Vector2f(size.width * (this->m_life / 100.f), 10));
-	if (this->m_life <= 0)
+	if (this->m_life <= 0) {
 		this->isDead = true;
+			this->m_engine.explode();
+	}
 }
 
 Entity AnimatedSprite::getType() const
