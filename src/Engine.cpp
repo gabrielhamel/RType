@@ -30,8 +30,18 @@ AEngine(width, height, title, vsync, fps), m_player(*this)
     this->m_music.setLoop(true);
     this->m_music.play();
 
+    this->m_explosionBuffer.loadFromFile("assets/die.wav");
+    this->m_explosionSound.setBuffer(this->m_explosionBuffer);
+
     this->setKeyRepeatEnabled(false);
 
+    this->m_sprites.push_back(std::make_unique<AnimatedSprite>(EnemyCommon, *this));
+    (*this->m_sprites.begin())->speedX = 100;
+    (*this->m_sprites.begin())->speedY = 0;
+
+    this->m_sprites.push_back(std::make_unique<AnimatedSprite>(EnemyEpic, *this));
+    (*(++this->m_sprites.begin()))->speedX = 50;
+    (*(++this->m_sprites.begin()))->speedY = 10;
 }
 
 Engine::~Engine()
@@ -114,11 +124,20 @@ void Engine::update(const sf::Time &ellapsedTime)
     this->m_background.update(ellapsedTime.asSeconds());
     for (auto bullet = this->m_player_bullets.begin(); bullet != this->m_player_bullets.end(); bullet++) {
         (*bullet)->update(ellapsedTime.asSeconds());
+        for (const auto &enemy : this->m_sprites)
+            if ((*bullet)->isCollide(*enemy)) {
+                enemy->takeDamage(5.f);
+                (*bullet)->die();
+                break;
+            }
         if ((*bullet)->isDead())
             bullet = this->m_player_bullets.erase(bullet);
     }
-    for (auto &entity : this->m_sprites)
-        entity->update(ellapsedTime.asSeconds());
+    for (auto bullet = this->m_sprites.begin(); bullet != this->m_sprites.end(); bullet++) {
+        (*bullet)->update(ellapsedTime.asSeconds());
+        if ((*bullet)->isDead)
+            bullet = this->m_sprites.erase(bullet);
+    }
     m_player.update(ellapsedTime.asSeconds());
 }
 
@@ -127,12 +146,21 @@ void Engine::draw(sf::RenderWindow &window)
     this->m_background.draw(window);
     for (auto &bullet : this->m_player_bullets)
         window.draw(*bullet);
-    for (const auto &entity : this->m_sprites)
+    for (const auto &entity : this->m_sprites) {
         window.draw(*entity);
+        entity->draw(window);
+    }
     window.draw(this->m_player);
 }
 
 void Engine::makeShot(const sf::Sprite &shooter)
 {
-    this->m_player_bullets.push_back(std::make_unique<Bullet>(shooter));
+    this->m_player_bullets.push_back(std::make_unique<Bullet>(shooter, *this));
+}
+
+void Engine::explode()
+{
+    if (this->m_explosionSound.getStatus() == sf::Sound::Status::Playing)
+        this->m_explosionSound.stop();
+    this->m_explosionSound.play();
 }

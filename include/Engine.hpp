@@ -29,7 +29,7 @@ private:
 
     sf::Vector2f m_joystick;
 
-    std::vector<std::unique_ptr<AnimatedSprite>> m_sprites;
+    std::list<std::unique_ptr<AnimatedSprite>> m_sprites;
 
     Player m_player;
 
@@ -38,6 +38,10 @@ private:
     Parallax m_background;
 
     sf::Music m_music;
+
+    sf::SoundBuffer m_explosionBuffer;
+
+    sf::Sound m_explosionSound;
 
     void eventManager(const sf::Event &event);
 
@@ -52,5 +56,7 @@ public:
     ~Engine();
 
     void makeShot(const sf::Sprite &shooter);
+
+    void explode();
 
 };

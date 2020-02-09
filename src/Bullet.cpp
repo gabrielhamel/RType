@@ -13,7 +13,7 @@
 
 #include "Bullet.hpp"
 
-Bullet::Bullet(const sf::Sprite &shooter) : AnimatedSprite(PlayerBullet),
+Bullet::Bullet(const sf::Sprite &shooter, Engine &engine) : AnimatedSprite(PlayerBullet, engine),
 m_speed(1000.f), m_isDead(false)
 {
     auto pos = shooter.getPosition();
@@ -39,4 +39,31 @@ void Bullet::update(float ellapsedTime)
 bool Bullet::isDead() const
 {
     return this->m_isDead;
+}
+
+void Bullet::die()
+{
+    this->m_isDead = true;
+}
+
+static bool isCollideRect(const sf::IntRect &a, const sf::IntRect &b)
+{
+    return a.intersects(b);
+}
+
+bool Bullet::isCollide(const AnimatedSprite &entity) const
+{
+    auto entityRect = Entities::instance().getRects(entity.getType())[0];
+    auto entityPos = entity.getPosition();
+    entityRect.top = entityPos.x;
+    entityRect.left = entityPos.y;
+    entityRect.width *= 3;
+    entityRect.height *= 3;
+    auto meRect = Entities::instance().getRects(this->m_type)[0];
+    auto mePos = this->getPosition();
+    meRect.top = mePos.x;
+    meRect.left = mePos.y;
+    meRect.width *= 3;
+    meRect.height *= 3;
+    return isCollideRect(entityRect, meRect);
 }

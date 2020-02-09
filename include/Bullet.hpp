@@ -24,10 +24,14 @@ private:
 
 public:
 
-    Bullet(const sf::Sprite &shooter);
+    bool isCollide(const AnimatedSprite &entity) const;
+
+    Bullet(const sf::Sprite &shooter, Engine &engine);
 
     void update(float ellapsedTime);
 
     bool isDead() const;
+
+    void die();
 
 };

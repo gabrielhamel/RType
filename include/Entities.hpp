@@ -41,4 +41,6 @@ public:
 
     float getFrameTime(Entity entity) const;
 
+    float getDefense(Entity entity) const;
+
 };
