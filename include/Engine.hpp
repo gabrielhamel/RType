@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <SFML/Audio.hpp>
 #include <list>
 
 #include "AEngine.hpp"
@@ -35,6 +36,8 @@ private:
     std::list<std::unique_ptr<Bullet>> m_player_bullets;
 
     Parallax m_background;
+
+    sf::Music m_music;
 
     void eventManager(const sf::Event &event);
 

@@ -25,6 +25,11 @@ AEngine(width, height, title, vsync, fps), m_player(*this)
     this->m_background.addLayer("assets/parallax/parallax-space-ring-planet.png", 160);
 
     this->m_player.setPosition(20, 290);
+
+    this->m_music.openFromFile("assets/music.wav");
+    this->m_music.setLoop(true);
+    this->m_music.play();
+
 }
 
 Engine::~Engine()

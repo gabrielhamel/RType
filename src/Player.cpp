@@ -23,7 +23,7 @@ static const sf::IntRect frames[] = {
 };
 
 Player::Player(Engine &engine) :
-m_engine(engine)
+m_engine(engine), m_soundShot()
 {
     this->m_texture.loadFromFile("assets/vessel.gif");
     this->setTexture(this->m_texture);
@@ -32,6 +32,8 @@ m_engine(engine)
     this->setPosition(0, 0);
     this->setOnShot(false);
     this->m_bulletTime = 0;
+    this->m_soundBuffer.loadFromFile("assets/shoot.wav");
+    this->m_soundShot.setBuffer(this->m_soundBuffer);
 }
 
 void Player::setTextureNo(unsigned int nb)
@@ -64,6 +66,9 @@ void Player::setSpeedY(float y)
 
 void Player::setOnShot(bool enable)
 {
+    this->m_soundShot.setLoop(enable);
+    if (enable == true)
+        this->m_soundShot.play();
     this->m_shot = enable;
     this->m_bulletTime = 0.2f;
 }

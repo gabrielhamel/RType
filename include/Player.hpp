@@ -12,6 +12,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class Engine;
 
@@ -23,6 +24,10 @@ private:
     Engine &m_engine;
 
     sf::Texture m_texture;
+
+    sf::SoundBuffer m_soundBuffer;
+
+    sf::Sound m_soundShot;
 
     float m_speedX;
 
