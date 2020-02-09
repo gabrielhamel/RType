@@ -47,7 +47,6 @@ void Player::update(float ellaspedTime)
     m_bulletTime += ellaspedTime;
     if (this->m_shot && this->m_bulletTime >= 0.2f) {
         this->m_bulletTime = 0.f;
-        // Make shot
         m_engine.makeShot(*this);
     }
 }

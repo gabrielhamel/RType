@@ -30,6 +30,8 @@ AEngine(width, height, title, vsync, fps), m_player(*this)
     this->m_music.setLoop(true);
     this->m_music.play();
 
+    this->setKeyRepeatEnabled(false);
+
 }
 
 Engine::~Engine()
